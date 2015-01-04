@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+  <title>MongoDB pub/sub</title>
+  <style>
+  * { margin: 0; padding: 10px; box-sizing: border-box; }
+  body { font: 13px Helvetica, Arial; }
+  #messages { list-style-type: none; margin: 0; padding: 0; }
+  #messages li { padding: 5px 10px; }
+  #messages li:nth-child(odd) { background: #eee; }
+  </style>
+</head>
+<body>
+
+  <h2>MongoDB/Socket.io demonstration</h2>
+
+  <ul id="messages"></ul>
+
+
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <script>
+  var socket = io();
+  socket.on('message', function(doc){
+    $('#messages').append($('<li>').text(doc.text));
+  });
+  </script>
+</body>
+</html>

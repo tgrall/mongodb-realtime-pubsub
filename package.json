@@ -2,8 +2,9 @@
   "name": "RealTimeMongoDB",
   "description" : "Realtime application with MongoDB, Nodejs and Socket.io",
   "dependencies": {
-    "mongodb": "1.4.x"
+    "mongodb": "1.4.x",
+    "socket.io": "1.2.1"
     },
-    "version": "0.0.1",
+    "version": "0.0.2",
     "author" : "Tugdual Grall"
 }
