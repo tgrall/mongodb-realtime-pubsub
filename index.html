@@ -5,7 +5,7 @@
   <style>
   * { margin: 0; padding: 10px; box-sizing: border-box; }
   body { font: 13px Helvetica, Arial; }
-  #messages { list-style-type: none; margin: 0; padding: 0; }
+  #messages { list-style-type: none; margin: 2; padding: 2; }
   #messages li { padding: 5px 10px; }
   #messages li:nth-child(odd) { background: #eee; }
   </style>
@@ -14,16 +14,46 @@
 
   <h2>MongoDB/Socket.io demonstration</h2>
 
+
+  Channels:
+  <select id="channel">
+    <option value="all">All</option>
+    <option value="blue">Blue</option>
+    <option value="white">White</option>
+    <option value="red">Red</option>
+  </select>
+
+
   <ul id="messages"></ul>
 
 
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
   <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
   <script>
-  var socket = io();
-  socket.on('message', function(doc){
-    $('#messages').append($('<li>').text(doc.text));
-  });
+    var socket = io();
+
+    socket.on('message', function(doc) {
+      $('#messages').append($('<li style="background-color:'+ doc.channel +'">').text(doc.text));
+
+
+
+    });
+
+
+    function changeChannel(channel){
+      $('#messages').empty();
+      socket.emit('changeChannel', channel);
+    }
+
+
+    $('#channel').on('change', function (e) {
+      var optionSelected = $("channel:selected", this);
+      var channel = this.value;
+      $('#messages').empty();
+      socket.emit('changeChannel', channel);
+    });
+
+
   </script>
 </body>
 </html>

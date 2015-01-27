@@ -28,15 +28,35 @@ mongo.MongoClient.connect (mongodbUri, function (err, db) {
 
     // open socket
     io.sockets.on("connection", function (socket) {
+
+
+      socket.on("changeChannel", function (channel) {
+        console.log( "Changing Channel to "+ channel +"for socket "+ socket.id );
+        if (channel == "all") { channel = undefined; }
+        socket.channel = channel;
+      });
+
+
       // open a tailable cursor
-      console.log("== open tailable cursor");
+      console.log("== open tailable cursor for socket "+ socket.id);
       collection.find({}, {tailable:true, awaitdata:true, numberOfRetries:-1}).sort({ $natural: 1 }).each(function(err, doc) {
-        console.log(doc);
-        // send message to client
-        if (doc.type == "message") {
-          socket.emit("message",doc);
+
+        if (doc.type != undefined && doc.type == 'message') {
+
+          if ( socket.channel == undefined ) {
+            socket.emit("message",doc);
+          } else if (doc.channel == socket.channel) {
+            socket.emit("message",doc);
+          }
+
         }
-      })
+
+
+      });
+
+
+
+
 
     });
 
